@@ -1,5 +1,5 @@
-import fs from 'fs';
-import rockData from '/data/inputs/0/rock-data.json' assert { type: 'json' };
+const fs = require('fs');
+const rockData = JSON.parse(fs.readFileSync('/data/inputs/0/data.json', 'utf8'));
 
 function analyzeRockBands(data) {
   const legendary = data.bands.filter(band => band.rating >= 9);
