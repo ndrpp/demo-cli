@@ -1,26 +1,34 @@
-[
-  {
-    "id": 1,
-    "name": "Mechanical Keyboard",
-    "price": 120.00,
-    "inStock": 15
-  },
-  {
-    "id": 2,
-    "name": "Ergonomic Mouse",
-    "price": 85.50,
-    "inStock": 0
-  },
-  {
-    "id": 3,
-    "name": "4K Monitor",
-    "price": 350.00,
-    "inStock": 8
-  },
-  {
-    "id": 4,
-    "name": "USB-C Hub",
-    "price": 45.00,
-    "inStock": 22
-  }
-]
+{
+  "bands": [
+    {
+      "name": "Led Zeppelin",
+      "genre": "Hard Rock",
+      "albums": 9,
+      "rating": 10
+    },
+    {
+      "name": "Black Sabbath",
+      "genre": "Heavy Metal",
+      "albums": 19,
+      "rating": 9
+    },
+    {
+      "name": "Deep Purple",
+      "genre": "Hard Rock",
+      "albums": 21,
+      "rating": 9
+    },
+    {
+      "name": "AC/DC",
+      "genre": "Hard Rock",
+      "albums": 17,
+      "rating": 10
+    },
+    {
+      "name": "Metallica",
+      "genre": "Thrash Metal",
+      "albums": 11,
+      "rating": 9
+    }
+  ]
+}

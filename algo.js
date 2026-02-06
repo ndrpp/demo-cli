@@ -1,36 +1,48 @@
-import fs from 'fs'
-import products from './data.json' with { type: 'json' };
+import fs from 'fs';
+import rockData from '/data/inputs/0/rock-data.json' assert { type: 'json' };
 
-function processInventory(data) {
-  const availableItems = data.filter(item => item.inStock > 0);
-  
-  const processed = availableItems.map(item => ({
-    name: item.name,
-    inventoryValue: item.price * item.inStock
-  }));
+function analyzeRockBands(data) {
+  const legendary = data.bands.filter(band => band.rating >= 9);
 
-  const totalMarketValue = processed.reduce((sum, item) => sum + item.inventoryValue, 0);
+  const totalAlbums = legendary.reduce((sum, band) => sum + band.albums, 0);
+  const avgRating = (legendary.reduce((sum, band) => sum + band.rating, 0) / legendary.length).toFixed(2);
+
+  const mostProlific = legendary.reduce((max, band) =>
+    band.albums > max.albums ? band : max
+  , legendary[0]);
 
   return {
     timestamp: new Date().toISOString(),
-    results: processed,
-    grandTotal: totalMarketValue.toFixed(2)
+    message: "🎸 IN ROCK WE TRUST! 🤘",
+    legendaryBands: legendary.map(b => ({
+      name: b.name,
+      genre: b.genre,
+      albums: b.albums,
+      rating: `${b.rating}/10`
+    })),
+    statistics: {
+      totalLegendaryBands: legendary.length,
+      totalAlbums: totalAlbums,
+      averageRating: avgRating,
+      mostProlificBand: `${mostProlific.name} with ${mostProlific.albums} albums`
+    }
   };
 }
 
-function main() {
-    const date = new Date().toISOString().split('T')[0];
-    const fileName = `results-${date}.json`;
+async function main() {
+  const today = new Date().toISOString().split('T')[0];
+  const outputFileName = `rock-analysis-${today}.json`;
 
-    const output = processInventory(products);
+  const output = analyzeRockBands(rockData);
 
-    fs.writeFile(fileName, JSON.stringify(output, null, 2), (err) => {
-        if (err) {
-            console.error("Error writing file:", err);
-        } else {
-            console.log(`Successfully saved results to ${fileName}`);
-        }
-    });
+  try {
+    await fs.promises.writeFile(outputFileName, JSON.stringify(output, null, 2));
+    console.log('🎸 Rock analysis complete!');
+    console.log(`📝 Report: ${outputFileName}`);
+    console.log(`🤘 ${output.statistics.totalLegendaryBands} legendary bands analyzed!`);
+  } catch (error) {
+    console.error('❌ Error writing output:', error);
+  }
 }
 
-main()
+main();
