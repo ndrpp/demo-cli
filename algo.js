@@ -1,11 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
-// Find and read the data file from Ocean compute mount point
 function findDataFile() {
   const inputDir = '/data/inputs/0';
 
-  // If /data/inputs/0 is a file (not a directory), read it directly
   if (fs.existsSync(inputDir) && fs.statSync(inputDir).isFile()) {
     console.log(`Found data as file at: ${inputDir}`);
     return JSON.parse(fs.readFileSync(inputDir, 'utf8'));
@@ -24,7 +22,6 @@ function findDataFile() {
     }
   }
 
-  // Try to find any file in the directory
   if (fs.existsSync(inputDir) && fs.statSync(inputDir).isDirectory()) {
     const files = fs.readdirSync(inputDir);
     if (files.length > 0) {
@@ -80,7 +77,8 @@ async function main() {
   const output = analyzeRockBands(rockData);
 
   try {
-    await fs.promises.writeFile(outputFileName, JSON.stringify(output, null, 2));
+    const outputPath = path.join('/data/outputs', outputFileName);
+    await fs.promises.writeFile(outputPath, JSON.stringify(output, null, 2));
     console.log('🎸 Rock analysis complete!');
     console.log(`📝 Report: ${outputFileName}`);
     console.log(`🤘 ${output.statistics.totalLegendaryBands} legendary bands analyzed!`);
